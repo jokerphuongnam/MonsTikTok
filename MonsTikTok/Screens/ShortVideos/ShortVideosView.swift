@@ -76,11 +76,3 @@ struct ShortVideosView: View {
         )
     }
 }
-
-extension UIApplication {
-    static var safeArea: UIEdgeInsets {
-        let scene = shared.connectedScenes.first as? UIWindowScene
-        let window = scene?.windows.first
-        return window?.safeAreaInsets ?? .zero
-    }
-}

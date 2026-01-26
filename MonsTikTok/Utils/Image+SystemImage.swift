@@ -14,7 +14,7 @@ extension Image {
         case ellipsisBubble
         case bookmark
         case arrowshapeTurnUpRight
-        case fill(_ systemImage: Self)
+        case fill(_ systemImage: Self, isFill: Bool = true)
     }
     
     init(_ systemImage: SystemImage) {
@@ -25,8 +25,8 @@ extension Image {
 extension Image.SystemImage {
     var rawValue: String {
         switch self {
-        case .fill(let systemImage):
-            systemImage.rawValue + ".fill"
+        case .fill(let systemImage, let isFill):
+            systemImage.rawValue + (isFill ? ".fill" : "")
         case .house:
             "house"
         case .handbag:
@@ -56,5 +56,9 @@ extension Image.SystemImage {
     
     var fill: Self {
         .fill(self)
+    }
+    
+    func fill(_ isFill: Bool) -> Self {
+        .fill(self, isFill: isFill)
     }
 }
