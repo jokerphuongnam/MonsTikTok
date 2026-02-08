@@ -10,7 +10,7 @@ struct MainTabScreen: View {
                 .tabTag(MainTab.home)
                 .environment(\.mainTabState, state)
 
-            ShopScreen()
+            NotificationScreen()
                 .tabTag(MainTab.notification)
 
             InboxScreen()
@@ -28,6 +28,7 @@ struct MainTabScreen: View {
                     alignment: .top
                 )
         }
+        .navigationTitle(state.selectedTab.navigationTitle)
     }
 }
 

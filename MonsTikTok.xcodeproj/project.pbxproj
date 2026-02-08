@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		167E86722F388CF00047A911 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 167E86712F388CF00047A911 /* Lottie */; };
 		16C849022F24C2EC0039AD98 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 16C849012F24C2EC0039AD98 /* Kingfisher */; };
 /* End PBXBuildFile section */
 
@@ -28,6 +29,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				16C849022F24C2EC0039AD98 /* Kingfisher in Frameworks */,
+				167E86722F388CF00047A911 /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -71,6 +73,7 @@
 			name = MonsTikTok;
 			packageProductDependencies = (
 				16C849012F24C2EC0039AD98 /* Kingfisher */,
+				167E86712F388CF00047A911 /* Lottie */,
 			);
 			productName = MonsTikTok;
 			productReference = 16C848AE2F1C0BBB0039AD98 /* MonsTikTok.app */;
@@ -102,6 +105,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				16C849002F24C2EB0039AD98 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				167E86702F388CF00047A911 /* XCRemoteSwiftPackageReference "lottie-spm" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 16C848AF2F1C0BBB0039AD98 /* Products */;
@@ -356,6 +360,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		167E86702F388CF00047A911 /* XCRemoteSwiftPackageReference "lottie-spm" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-spm.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.6.0;
+			};
+		};
 		16C849002F24C2EB0039AD98 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
@@ -367,6 +379,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		167E86712F388CF00047A911 /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 167E86702F388CF00047A911 /* XCRemoteSwiftPackageReference "lottie-spm" */;
+			productName = Lottie;
+		};
 		16C849012F24C2EC0039AD98 /* Kingfisher */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 16C849002F24C2EB0039AD98 /* XCRemoteSwiftPackageReference "Kingfisher" */;

@@ -71,4 +71,19 @@ extension MainTab {
                 .white
         }
     }
+    
+    var navigationTitle: String {
+        switch self {
+        case .home:
+            ""
+        case .notification:
+            "Notification"
+        case .upload:
+            ""
+        case .inbox:
+            "Messages"
+        case .profile:
+            "Profile"
+        }
+    }
 }

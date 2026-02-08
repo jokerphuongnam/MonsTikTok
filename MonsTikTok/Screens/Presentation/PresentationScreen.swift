@@ -4,7 +4,7 @@ struct PresentationScreen: View {
     @State private var coordinator = PresentationCoordinator()
     
     var body: some View {
-        MainTabScreen()
+        NavigationScreen()
             .environment(\.presentationCoordinator, coordinator)
     }
 }

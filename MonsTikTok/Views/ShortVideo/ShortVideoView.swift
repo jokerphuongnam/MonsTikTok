@@ -32,7 +32,6 @@ struct ShortVideoView: View {
         }
         .onChange(of: isEnabled) { _, newValue in
             manager.updateActive(player: player, newValue)
-            print("fjnasdfjkafkasdfa", newValue)
         }
         .onChange(of: player) { oldValue, newValue in
             guard let player = newValue else { return }
