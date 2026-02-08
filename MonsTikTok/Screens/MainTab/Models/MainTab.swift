@@ -4,14 +4,14 @@ enum MainTab: String, CaseIterable, Identifiable {
     var id: Self { self }
     
     case home
-    case shop
+    case notification
     case upload
     case inbox
     case profile
 }
 
 extension MainTab {
-    static let allCases: [MainTab] = [.home, .shop, .inbox, .profile]
+    static let allCases: [MainTab] = [.home, .notification, .upload, .inbox, .profile]
 }
 
 extension MainTab {
@@ -28,10 +28,10 @@ extension MainTab {
         switch self {
         case .home:
                 .house
-        case .shop:
-                .handbag
+        case .notification:
+                .bell
         case .upload:
-                nil
+            nil
         case .inbox:
                 .textBubble
         case .profile:
@@ -43,10 +43,10 @@ extension MainTab {
         switch self {
         case .home:
                 .house.fill
-        case .shop:
-                .handbag.fill
+        case .notification:
+                .bell.fill
         case .upload:
-                nil
+            nil
         case .inbox:
                 .textBubble.fill
         case .profile:

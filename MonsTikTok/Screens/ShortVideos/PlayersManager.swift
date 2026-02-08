@@ -8,7 +8,7 @@ import AVFoundation
     private var players: [AVPlayer] = []
     private var assets: [AVURLAsset] = []
     
-    func configure(urls: [URL]) {
+    func configure(urls: [URL], isActive: Bool) {
         self.urls = urls
         
         self.assets = urls.map { url in
@@ -33,12 +33,12 @@ import AVFoundation
             return player
         }
         
-        play(index: 0)
-        warmNextPlayers(from: 0)
+        play(index: 0, isActive: isActive)
+        warmNextPlayers(from: 0, isActive: isActive)
     }
     
-    func play(index: Int) {
-        guard index >= 0, index < players.count else { return }
+    func play(index: Int, isActive: Bool) {
+        guard index >= 0, index < players.count, isActive else { return }
         guard index != currentIndex else { return }
         
         let previousIndex = currentIndex
@@ -46,12 +46,13 @@ import AVFoundation
         players[previousIndex].pause()
         
         currentIndex = index
-        players[index].play()
+//        players[index].play()
         
-        warmNextPlayers(from: index)
+        warmNextPlayers(from: index, isActive: isActive)
     }
     
-    private func warmNextPlayers(from index: Int) {
+    private func warmNextPlayers(from index: Int, isActive: Bool) {
+        guard isActive else { return }
         let start = index + 1
         let end = min(index + 2, players.count - 1)
         
@@ -60,7 +61,7 @@ import AVFoundation
         for i in start...end {
             let player = players[i]
             
-            player.play()
+//            player.play()
             player.pause()
         }
     }

@@ -12,7 +12,7 @@ struct ShortVideoCell: View {
     
     var body: some View {
         ZStack(alignment: .bottom) {
-            ShortVideoView(player: player, isActive: isActive)
+            ShortVideoView(player: player)
                 .overlay {
                     if seekState == .loading {
                         ProgressView()

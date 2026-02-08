@@ -11,7 +11,7 @@ struct MainTabScreen: View {
                 .environment(\.mainTabState, state)
 
             ShopScreen()
-                .tabTag(MainTab.shop)
+                .tabTag(MainTab.notification)
 
             InboxScreen()
                 .tabTag(MainTab.inbox)

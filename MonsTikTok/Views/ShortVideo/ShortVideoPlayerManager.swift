@@ -1,14 +1,15 @@
 import Observation
 import AVFoundation
 
-@Observable
-final class ShortVideoPlayerManager {
+@Observable final class ShortVideoPlayerManager {
     private(set) var state: ShortVideoState = .loading
+    private var isActive: Bool = true
     
     private var statusObserver: NSKeyValueObservation?
     private var endObserver: NSObjectProtocol?
     
     func updateActive(player: AVPlayer?, _ isActive: Bool) {
+        self.isActive = isActive
         state = .init(isActive: isActive)
         isActive ? player?.play() : player?.pause()
     }
@@ -26,6 +27,7 @@ final class ShortVideoPlayerManager {
     }
     
     func cleanup(player: AVPlayer?) {
+        self.isActive = isActive
         player?.pause()
         
         if let endObserver {
@@ -38,7 +40,7 @@ final class ShortVideoPlayerManager {
     }
     
     func setup(player: AVPlayer?, isActive: Bool) {
-        guard let player else { return }
+        guard let player, isActive else { return }
         
         player.actionAtItemEnd = .none
         
@@ -46,28 +48,28 @@ final class ShortVideoPlayerManager {
             forName: .AVPlayerItemDidPlayToEndTime,
             object: player.currentItem,
             queue: .main
-        ) { _ in
+        ) { [weak player] _ in
+            guard let player else { return }
             player.seek(to: .zero)
             player.play()
         }
         
-        statusObserver = player.observe(\.status, options: [.new, .initial]) { item, _ in
-            DispatchQueue.main.async {
+        statusObserver = player.observe(\.status, options: [.new, .initial]) { [weak self] item, _ in
+            guard let self else { return }
+            DispatchQueue.main.async { [weak self, weak player] in
+                guard let self, let player else { return }
                 switch item.status {
                 case .readyToPlay:
-                    if isActive {
+                    if self.isActive {
                         player.play()
                     }
-                    self.state = .init(isActive: isActive)
-                    
+                    self.state = .init(isActive: self.isActive)
                 case .failed:
                     self.state = .failed(
                         error: item.error ?? NSError(domain: "Unknown", code: -1)
                     )
-                    
                 case .unknown:
                     self.state = .loading
-                    
                 @unknown default:
                     break
                 }

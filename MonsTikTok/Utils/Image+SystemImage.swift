@@ -4,6 +4,7 @@ extension Image {
     indirect enum SystemImage {
         case house
         case handbag
+        case bell
         case textBubble
         case person
         case plus
@@ -31,6 +32,8 @@ extension Image.SystemImage {
             "house"
         case .handbag:
             "handbag"
+        case .bell:
+            "bell"
         case .textBubble:
             "text.bubble"
         case .person:

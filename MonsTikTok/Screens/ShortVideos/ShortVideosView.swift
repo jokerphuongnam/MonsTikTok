@@ -5,6 +5,7 @@ struct ShortVideosView: View {
     @State private var playerManager = PlayersManager()
     @State private var viewModel = ShortVideosViewModel()
     @State private var state = ShortVideosState()
+    @Environment(\.isEnabled) private var isEnabled
     private let global = UIScreen.current.bounds
     
     var body: some View {
@@ -49,12 +50,12 @@ struct ShortVideosView: View {
         .background(.black)
         .onAppear {
             Task.detached(name: "Load", priority: .utility) {
-                await playerManager.configure(urls: viewModel.urls)
+                await playerManager.configure(urls: viewModel.urls, isActive: isEnabled)
             }
         }
         .onChange(of: currentIndex!) { oldIndex, newIndex in
             guard oldIndex != newIndex, newIndex != playerManager.currentIndex else { return }
-            playerManager.play(index: newIndex)
+            playerManager.play(index: newIndex, isActive: isEnabled)
             state.seekState = .idle
         }
         .scrollIndicators(.hidden)
@@ -74,5 +75,10 @@ struct ShortVideosView: View {
                     }
             }
         )
+        .onChange(of: isEnabled) { oldValue, newValue in
+            if oldValue != newValue, newValue {
+                playerManager.play(index: playerManager.currentIndex, isActive: newValue)
+            }
+        }
     }
 }

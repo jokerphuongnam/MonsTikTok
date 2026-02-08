@@ -2,13 +2,12 @@ import SwiftUI
 import AVKit
 
 struct ShortVideoView: View {
+    @Environment(\.isEnabled) private var isEnabled
     @State private var manager: ShortVideoPlayerManager = .init()
     private let player: AVPlayer?
-    private let isActive: Bool
     
-    init(player: AVPlayer?, isActive: Bool) {
+    init(player: AVPlayer?) {
         self.player = player
-        self.isActive = isActive
     }
 
     var body: some View {
@@ -31,13 +30,13 @@ struct ShortVideoView: View {
         .onDisappear {
             manager.cleanup(player: player)
         }
-        .onChange(of: isActive) { _, newValue in
+        .onChange(of: isEnabled) { _, newValue in
             manager.updateActive(player: player, newValue)
             print("fjnasdfjkafkasdfa", newValue)
         }
         .onChange(of: player) { oldValue, newValue in
             guard let player = newValue else { return }
-            manager.setup(player: player, isActive: isActive)
+            manager.setup(player: player, isActive: isEnabled)
         }
     }
 }
