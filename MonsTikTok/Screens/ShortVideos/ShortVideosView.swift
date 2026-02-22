@@ -28,14 +28,20 @@ struct ShortVideosView: View {
                             screenHeight: screenHeight
                         )
                         
-                        ShortVideoCell(seekState: $state.seekState, feed: feed, player: player, isActive: isActive)
-                            .frame(
-                                width: global.width,
-                                height: screenHeight
-                            )
-                            .animation(.linear, value: isActive)
-                            .id(index)
-                            .opacity(opacity)
+                        ShortVideoCell(
+                            seekState: $state.seekState,
+                            index: index,
+                            feed: feed,
+                            player: player,
+                            isActive: isActive
+                        )
+                        .frame(
+                            width: global.width,
+                            height: screenHeight
+                        )
+                        .animation(.linear, value: isActive)
+                        .id(index)
+                        .opacity(opacity)
                     }
                     .frame(
                         width: global.width,
@@ -54,7 +60,7 @@ struct ShortVideosView: View {
             }
         }
         .onChange(of: currentIndex!) { oldIndex, newIndex in
-            guard oldIndex != newIndex, newIndex != playerManager.currentIndex else { return }
+            guard playerManager.isSetup, oldIndex != newIndex, newIndex != playerManager.currentIndex else { return }
             playerManager.play(index: newIndex, isActive: isEnabled)
             state.seekState = .idle
         }
@@ -75,10 +81,13 @@ struct ShortVideosView: View {
                     }
             }
         )
-        .onChange(of: isEnabled) { oldValue, newValue in
-            if oldValue != newValue, newValue {
-                playerManager.play(index: playerManager.currentIndex, isActive: newValue)
-            }
-        }
+//        .onChange(of: isEnabled) { oldValue, newValue in
+//            guard playerManager.isSetup else { return }
+//            if newValue {
+//                playerManager.resumeCurrent(isActive: newValue)
+//            } else {
+//                playerManager.pauseAll()
+//            }
+//        }
     }
 }

@@ -2,7 +2,7 @@ import Observation
 import AVFoundation
 
 @Observable final class ShortVideoPlayerManager {
-    private(set) var state: ShortVideoState = .loading
+    var state: ShortVideoState = .loading
     private var isActive: Bool = true
     
     private var statusObserver: NSKeyValueObservation?

@@ -3,6 +3,7 @@ import AVFoundation
 
 @Observable final class PlayersManager {
     private(set) var currentIndex: Int = 0
+    private(set) var isSetup: Bool = false
     private var urls: [URL] = []
     
     private var players: [AVPlayer] = []
@@ -22,19 +23,24 @@ import AVFoundation
             }
         }
         
-        self.players = assets.map { asset in
+        self.players = assets.enumerated().map { element in
+            let (index, asset) = element
             let item = AVPlayerItem(asset: asset)
             item.preferredForwardBufferDuration = 2.0
             item.canUseNetworkResourcesForLiveStreamingWhilePaused = true
             
             let player = AVPlayer(playerItem: item)
             player.automaticallyWaitsToMinimizeStalling = false
+            if index != 0 {
+                player.pause()
+            }
             
             return player
         }
         
-        play(index: 0, isActive: isActive)
-        warmNextPlayers(from: 0, isActive: isActive)
+//        warmNextPlayers(from: 0, isActive: isActive)
+//        play(index: 0, isActive: isActive)
+        isSetup = true
     }
     
     func play(index: Int, isActive: Bool) {
@@ -46,7 +52,7 @@ import AVFoundation
         players[previousIndex].pause()
         
         currentIndex = index
-//        players[index].play()
+        players[index].play()
         
         warmNextPlayers(from: index, isActive: isActive)
     }
@@ -61,7 +67,6 @@ import AVFoundation
         for i in start...end {
             let player = players[i]
             
-//            player.play()
             player.pause()
         }
     }
@@ -73,5 +78,11 @@ import AVFoundation
     
     func pauseAll() {
         players.forEach { $0.pause() }
+    }
+    
+    func resumeCurrent(isActive: Bool) {
+        guard isActive, currentIndex >= 0, currentIndex < players.count else { return }
+        players.forEach { $0.pause() }
+        players[currentIndex].play()
     }
 }

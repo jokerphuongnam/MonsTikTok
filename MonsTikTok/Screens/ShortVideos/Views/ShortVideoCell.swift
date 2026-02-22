@@ -6,13 +6,14 @@ struct ShortVideoCell: View {
     @Binding var seekState: SeekBarState
     @State private var progress: Double = 0
     
+    let index: Int
     let feed: Feed
     let player: AVPlayer?
     let isActive: Bool
     
     var body: some View {
         ZStack(alignment: .bottom) {
-            ShortVideoView(player: player)
+            ShortVideoView(player: player, isActive: isActive)
                 .overlay {
                     if seekState == .loading {
                         ProgressView()
@@ -35,20 +36,20 @@ struct ShortVideoCell: View {
                 SeekBar(progress: $progress, state: $seekState, player: player, isActive: isActive)
             }
             .padding(.horizontal, 8)
+            .padding(.bottom, 16)
         }
         .onAppear {
-            observePlayback()
+            if isActive {
+                observePlayback()
+            }
         }
         .onChange(of: player) { _, newValue in
-            guard newValue != nil else { return }
+            guard newValue != nil, isActive else { return }
             observePlayback()
         }
-        .onChange(of: isEnabled) { _, newValue in
-            guard let player else { return }
-            if isActive, newValue {
-                player.play()
-            } else {
-                player.pause()
+        .onChange(of: isActive) { _, newValue in
+            if newValue, isEnabled {
+                observePlayback()
             }
         }
     }
@@ -162,12 +163,13 @@ private extension ShortVideoCell {
 private extension ShortVideoCell {
     @MainActor private func observePlayback() {
         guard let player else { return }
-
+        
         let interval = CMTime(seconds: 0.1, preferredTimescale: 600)
-
+        
         player.addPeriodicTimeObserver(forInterval: interval, queue: .main) { time in
             DispatchQueue.main.async {
-                guard seekState == .idle, let duration = player.currentItem?.duration.seconds,
+                guard seekState == .idle,
+                      let duration = player.currentItem?.duration.seconds,
                       duration > 0 else { return }
                 
                 progress = time.seconds / duration
