@@ -29,6 +29,7 @@ struct MainTabScreen: View {
                 )
         }
         .navigationTitle(state.selectedTab.navigationTitle)
+        .toolbar(state.selectedTab.isHiddenNavigationBar ? .hidden : .visible, for: .navigationBar)
     }
 }
 

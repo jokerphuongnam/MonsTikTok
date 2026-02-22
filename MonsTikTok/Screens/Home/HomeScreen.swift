@@ -77,6 +77,7 @@ private extension HomeScreen {
         }
         .zIndex(101)
         .offset(y: safeAreaInsets.top)
+        .disabled(false)
     }
     
     private var foregroundTabColor: Color {

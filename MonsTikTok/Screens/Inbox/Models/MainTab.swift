@@ -86,4 +86,13 @@ extension MainTab {
             "Profile"
         }
     }
+    
+    var isHiddenNavigationBar: Bool {
+        switch self {
+        case .home, .upload:
+            true
+        case .notification, .inbox, .profile:
+            false
+        }
+    }
 }
